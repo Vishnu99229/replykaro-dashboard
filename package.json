@@ -1,7 +1,10 @@
 {
-  "name": "dashboard",
+  "name": "replykaro-dashboard",
+  "description": "Clinic owner dashboard for ReplyKaro AI receptionist - manage bookings, patients, and analytics",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "Vishnu",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
