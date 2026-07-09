@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useAnalyticsAppointments } from '../hooks/useAppointments'
-import { useMessages } from '../hooks/useMessages'
+import { MOCK_ANALYTICS_STATS } from '../data/mockData'
 import StatCard from '../components/StatCard'
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
@@ -15,35 +15,10 @@ function getComputedTextColor() {
 }
 
 export default function Analytics() {
-  const { data: appointments, loading: apptsLoading } = useAnalyticsAppointments()
-  const { totalCount: conversationCount, loading: msgsLoading } = useMessages()
+  const { data: appointments, loading } = useAnalyticsAppointments()
 
-  const loading = apptsLoading || msgsLoading
-
-  // --- Computed stats ---
-  const stats = useMemo(() => {
-    if (!appointments.length) return { monthTotal: 0, avgPerDay: 0, busiestDay: '—', conversionRate: 0 }
-
-    const monthTotal = appointments.length
-    const avgPerDay = (monthTotal / 30).toFixed(1)
-
-    // Busiest day of week
-    const dayCounts = [0, 0, 0, 0, 0, 0, 0] // Sun-Sat
-    appointments.forEach(a => {
-      const day = new Date(a.date + 'T00:00:00').getDay()
-      dayCounts[day]++
-    })
-    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-    const busiestIdx = dayCounts.indexOf(Math.max(...dayCounts))
-    const busiestDay = dayNames[busiestIdx]
-
-    // Conversion rate estimate
-    const conversionRate = conversationCount > 0
-      ? Math.round((monthTotal / conversationCount) * 100)
-      : 0
-
-    return { monthTotal, avgPerDay, busiestDay, conversionRate: Math.min(conversionRate, 100) }
-  }, [appointments, conversationCount])
+  // Stat cards use pinned walkthrough values; charts derive from mock appointments
+  const stats = MOCK_ANALYTICS_STATS
 
   // --- Chart: appointments per day ---
   const dailyData = useMemo(() => {

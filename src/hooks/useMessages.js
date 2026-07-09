@@ -1,35 +1,28 @@
 import { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
+// import { supabase } from '../lib/supabase'
+import { MOCK_MESSAGES, MOCK_CONVERSATION_TOTAL } from '../data/mockData'
 
 export function useMessages(limit = 50) {
   const [messages, setMessages] = useState([])
   const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(true)
 
+  // --- Supabase (restore for production) ---
+  // async function fetchMessages() {
+  //   setLoading(true)
+  //   const { data, error } = await supabase
+  //     .from('messages')
+  //     .select('*, patients(name, phone)')
+  //     .order('created_at', { ascending: false })
+  //     .limit(limit)
+  //   ...
+  // }
+
   async function fetchMessages() {
     setLoading(true)
-    const { data, error } = await supabase
-      .from('messages')
-      .select('*, patients(name, phone)')
-      .order('created_at', { ascending: false })
-      .limit(limit)
-
-    if (error) {
-      console.error('Error fetching messages:', error)
-    } else {
-      setMessages(data || [])
-    }
-
-    // Get total unique conversation count (unique patient_ids)
-    const { data: convData } = await supabase
-      .from('messages')
-      .select('patient_id')
-
-    if (convData) {
-      const uniquePatients = new Set(convData.map(m => m.patient_id))
-      setTotalCount(uniquePatients.size)
-    }
-
+    await new Promise((r) => setTimeout(r, 120))
+    setMessages(MOCK_MESSAGES.slice(0, limit))
+    setTotalCount(MOCK_CONVERSATION_TOTAL)
     setLoading(false)
   }
 

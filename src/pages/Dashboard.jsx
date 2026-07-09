@@ -25,7 +25,7 @@ function formatDateHeader(dateStr) {
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('today')
   const { todayAppts, upcomingAppts, weekCount, loading: apptsLoading, refetch: refetchAppts } = useAppointments()
-  const { patients, loading: patientsLoading } = usePatients()
+  const { totalCount: patientTotal, loading: patientsLoading } = usePatients()
   const { messages, totalCount, loading: msgsLoading, refetch: refetchMsgs } = useMessages()
   const { clinic, loading: clinicLoading } = useClinic()
 
@@ -94,7 +94,7 @@ export default function Dashboard() {
         />
         <StatCard
           label="Patients"
-          value={loading ? '—' : patients.length}
+          value={loading ? '—' : patientTotal}
           subtitle="total"
           borderColor="#22c55e"
         />

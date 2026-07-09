@@ -3,7 +3,7 @@ import { usePatients } from '../hooks/usePatients'
 import PatientRow from '../components/PatientRow'
 
 export default function Patients() {
-  const { patients, loading } = usePatients()
+  const { patients, totalCount, loading } = usePatients()
   const [search, setSearch] = useState('')
 
   const filtered = patients.filter(p => {
@@ -20,7 +20,7 @@ export default function Patients() {
         <div>
           <h2 className="text-lg font-bold" style={{ color: 'var(--text)' }}>Patients</h2>
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-            {patients.length} total patients
+            {totalCount} total patients
           </p>
         </div>
       </div>
